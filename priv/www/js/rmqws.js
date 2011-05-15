@@ -3,10 +3,10 @@ var RabbitMQWs = function() {
     var that = {
         ws: null,
 
-        start: function() {
+        start: function(host) {
             if ("WebSocket" in window) {
               // browser supports websockets
-              this.ws = new WebSocket("ws://" + window.location.host + "/service");
+              this.ws = new WebSocket("ws://" + host + "/service");
               var that = this;
               this.ws.onopen = function() {
                   // websocket is connected

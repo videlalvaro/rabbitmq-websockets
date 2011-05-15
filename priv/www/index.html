@@ -46,7 +46,7 @@
             $(document).ready(function() {
                 var rmqws = new RabbitMQWs();
 
-                rmqws.start();
+                rmqws.start(window.location.host);
 
                 $(rmqws).bind('rmqws-onconnection-status', function(event, status){
                     displayMessage("#info", status);
