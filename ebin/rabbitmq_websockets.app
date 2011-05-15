@@ -1,5 +1,5 @@
 {application, rabbitmq_websockets,
- [{description, "Embedded Rabbit Metronome"},
+ [{description, "AMQP to Websockets bridge"},
   {vsn, "0.01"},
   {modules, [
     rabbit_websockets,
