@@ -59,7 +59,8 @@ You can modify such settings on your `rabbitmq.config` file like this:
         ...
         %% list of RabbitMQ options
         ]},
-      {rabbitmq_websockets, [ {misultin_port, 8081},
+      {rabbitmq_websockets, [
+              {misultin_port, 8081},
               {message_handler, {my_module, my_function}} ]}
     ].
 
