@@ -64,6 +64,16 @@ You can modify such settings on your `rabbitmq.config` file like this:
               {message_handler, {my_module, my_function}} ]}
     ].
 
+## Modifying the UI ##
+
+The Web UI is not easily modifiable as os now. You still can implement your own view.
+
+The important bits are the Websockets event handling and the function `RabbitMQWs.prototype.switchExchange = function(exchange, routing_key)`.
+
+The `switchExchange` function expects two parameters, the exchange name and the routing key.  They are sent to the server using the following format:
+
+    exchange_name:routing_key
+
 ## License ##
 
 See LICENSE.md
