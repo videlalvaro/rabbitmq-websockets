@@ -1,1 +1,1 @@
-DEPS:=rabbitmq-server misultin-wrapper rabbitmq-erlang-client
+DEPS:=rabbitmq-server misultin_wrapper rabbitmq-erlang-client
