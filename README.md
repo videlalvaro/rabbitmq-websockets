@@ -66,7 +66,7 @@ You can modify such settings on your `rabbitmq.config` file like this:
 
 ## Modifying the UI ##
 
-The Web UI is not easily modifiable as os now. You still can implement your own view.
+The Web UI is not easily modifiable as of now. You still can implement your own view.
 
 The important bits are the Websockets event handling and the function `RabbitMQWs.prototype.switchExchange = function(exchange, routing_key)`.
 
