@@ -46,7 +46,7 @@ All three parameters are binaries.
 
 ## Configuration ##
 
-This plugin has two parameters that affect it's behavior:
+This plugin has two parameters that affect its behavior:
 
 `misultin_port`: The port Misultin should listen to. Default value is `8080`.
 
