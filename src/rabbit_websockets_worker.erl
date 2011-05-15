@@ -71,19 +71,31 @@ handle('HEAD', [], #http_state{req=Req}) ->
     Req:ok("");
 
 handle('GET', [], #http_state{req=Req}) ->
-    Req:file("./priv/www/index.html", [{"Content-Type", "text/html"}]);
+    Req:file(filename:join(web_root(), "index.html"), [{"Content-Type", "text/html"}]);
+
+handle('GET', ["index.html"], #http_state{req=Req}) ->
+    Req:file(filename:join(web_root(), "index.html"), [{"Content-Type", "text/html"}]);
 
 handle('GET',["favicon.ico"], #http_state{req=Req}) ->
-    Req:file("./priv/www/favicon.ico", [{"Content-Type", "image/vnd.microsoft.icon"}]);
+    Req:file(filename:join(web_root(), "favicon.ico"), [{"Content-Type", "image/vnd.microsoft.icon"}]);
 
 handle('GET', ["js", FileName], #http_state{req=Req}) ->
-    Req:file(filename:join("./priv/www/js/", FileName), [{"Content-Type", "text/javascript"}]);
+    Req:file(filename:join(js_root(), FileName), [{"Content-Type", "text/javascript"}]);
 
 handle('GET', ["css", FileName], #http_state{req=Req}) ->
-    Req:file(filename:join("./priv/www/css/", FileName), [{"Content-Type", "text/css"}]);
+    Req:file(filename:join(css_root(), FileName), [{"Content-Type", "text/css"}]);
 
 handle(_, _, #http_state{req=Req}) ->
     Req:ok([{"Content-Type", "text/plain"}], "Page not found.").
+
+web_root() ->
+    filename:join(code:priv_dir(rabbitmq_websockets), "www").
+
+js_root() ->
+    filename:join(web_root(), "js").
+
+css_root() ->
+    filename:join(web_root(), "css").
 
 %-----------------------------------
 % Websockets Handling Implementation
