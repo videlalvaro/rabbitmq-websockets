@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RabbitMQ Websockets Plugin</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="icon" href="/favicon.ico">
+    <style type="text/css" media="screen">
+        p {
+            padding: 8px;
+        }
+    </style>
+    <link rel="icon" href="/favicon.ico">
+  </head>
+  <body>
+    <h1>RabbitMQ Websockets Plugin</h1>
+    <div id="main">
+        <ol id="messages"></ol>
+        <div id="widgets">
+            <form id="exchange" method="post" action="nowhere">
+              <fieldset>
+                <ol>
+                  <li>
+                    <label for="name">Exchange Name:</label>
+                    <input type="text" id="name" name="name"></input>
+                  </li>
+                  <li>
+                    <label for="routing_key">Routing Key:</label>
+                    <input type="text" id="routing_key" name="routing_key"></input>
+                  </li>
+                  <li>
+                    <input type="submit" name="submit" value="Submit" id="submit">
+                  </li>
+                </ol>
+              </fieldset>
+            </form>
+            <div>
+                <h3>Info:<h3>
+                <ul id="info">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/rmqws.js"></script>
+  </body>
+</html>
