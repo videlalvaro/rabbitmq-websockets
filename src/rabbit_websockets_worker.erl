@@ -10,7 +10,7 @@
 
 -record(state, {connection, port}).
 -record(http_state, {req}).
--record(websocket_state, {ws, conn, consumer}).
+-record(websocket_state, {ws, conn, consumer, handler}).
 
 start_link(Port) ->
     gen_server:start_link({global, ?MODULE}, ?MODULE, [Port], []).
@@ -25,12 +25,13 @@ stop() ->
 init([Port]) ->
     process_flag(trap_exit, true),
     {ok, Connection} = amqp_connection:start(#amqp_params_direct{}),
+    {ok, Fun} = application:get_env(message_handler),
 
     misultin:start_link([{port, Port},
                         {loop, fun(Req) -> handle_http(#http_state{req=Req}) end},
                         {ws_loop,
                          fun(Ws) ->
-                                 handle_websocket(#websocket_state{ws=Ws, conn=Connection})
+                                 handle_websocket(#websocket_state{ws=Ws, conn=Connection, handler=Fun})
                          end},
                          {ws_autoexit, false}]),
     erlang:monitor(process, misultin),
@@ -101,10 +102,10 @@ css_root() ->
 % Websockets Handling Implementation
 % ----------------------------------
 
-handle_websocket(#websocket_state{ws=Ws, conn=Connection} = State) ->
+handle_websocket(#websocket_state{ws=Ws, conn=Connection, handler={M, F}} = State) ->
     receive
         {amqp_msgs, Msg} ->
-            Ws:send(binary_to_term(Msg)),
+            Ws:send(M:F(Msg)),
             handle_websocket(State);
         {browser, Data} ->
             {E, R} = parse_data(Data),

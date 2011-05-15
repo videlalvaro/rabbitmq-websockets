@@ -1,6 +1,6 @@
 # RabbitMQ Websockets Plugin #
 
-This plugin exposes a Websockets for RabbitMQ.
+This plugin exposes Websockets for RabbitMQ.
 
 The user connects to the host where RabbitMQ is running, using default port `8080`.
 
@@ -20,13 +20,15 @@ Get the `rabbitmq-public-umbrella`
 
 Get the [misultin_wrapper](https://github.com/videlalvaro/misultin_wrapper) to support Websockets:
 
+Inside the `rabbitmq-public-umbrella` directory do:
+
     $ git clone git://github.com/videlalvaro/misultin_wrapper.git
 
-Clone this repository:
+Then clone this repository:
 
     $ git clone git://github.com/videlalvaro/rabbitmq-websockets.git
 
-Once you have the code you can move into the `rabbitmq-websockets` and test the plugin with the broker:
+Once you have the code you can move into the `rabbitmq-websockets` directory and test the plugin with the broker:
 
     $ make run-in-broker
 
@@ -41,6 +43,25 @@ You can publish test messages by calling the following helper function inside th
     rabbit_websockets_util:publish_msg(Exchange, Msg, RKey).
 
 All three parameters are binaries.
+
+## Configuration ##
+
+This plugin has two parameters that affect it's behavior:
+
+`misultin_port`: The port Misultin should listen to. Default value is `8080`.
+
+`message_handler`: an Erlang tuple with two atoms like {module, function}. Default value is `{rabbit_websockets_util, basic_handler}`.
+
+You can modify such settings on your `rabbitmq.config` file like this:
+
+    [
+      {rabbit, [
+        ...
+        %% list of RabbitMQ options
+        ]},
+      {rabbitmq_websockets, [ {misultin_port, 8081},
+              {message_handler, {my_module, my_function}} ]}
+    ].
 
 ## License ##
 

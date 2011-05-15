@@ -10,5 +10,6 @@
   ]},
   {registered, []},
   {mod, {rabbit_websockets, []}},
-  {env, [{misultin_port, 8080}]},
+  {env, [ {misultin_port, 8080},
+          {message_handler, {rabbit_websockets_util, basic_handler}} ]},
   {applications, [kernel, stdlib, rabbit, amqp_client]}]}.
