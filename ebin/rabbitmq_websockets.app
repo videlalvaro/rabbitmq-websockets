@@ -1,6 +1,6 @@
 {application, rabbitmq_websockets,
  [{description, "AMQP to Websockets bridge"},
-  {vsn, "0.01"},
+  {vsn, "%%VSN%%"},
   {modules, [
     rabbit_websockets,
     rabbit_websockets_consumer,
