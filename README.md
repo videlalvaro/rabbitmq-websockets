@@ -42,7 +42,9 @@ You can publish test messages by calling the following helper function inside th
 
     rabbit_websockets_util:publish_msg(Exchange, Msg, RKey).
 
-All three parameters are binaries.
+All three parameters are binaries, for example:
+
+    rabbit_websockets_util:publish_msg(<<"amq.fanout">>, <<"Hello Websockets!">>, <<"">>).
 
 ## Configuration ##
 
@@ -66,13 +68,40 @@ You can modify such settings on your `rabbitmq.config` file like this:
 
 ## Modifying the UI ##
 
-The Web UI is not easily modifiable as of now. You still can implement your own view.
+To implement your own UI you need to have the following javascript files in your HTML:
 
-The important bits are the Websockets event handling and the function `RabbitMQWs.prototype.switchExchange = function(exchange, routing_key)`.
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/rmqws.js"></script>
 
-The `switchExchange` function expects two parameters, the exchange name and the routing key.  They are sent to the server using the following format:
+A sample view can be found on `priv/www/index.html`
 
-    exchange_name:routing_key
+The `RabbitMQWs` object will fire the following events:
+
+`rmqws-connection-status`: passes the connection status as parameter to the event handler.
+
+`rmqws-onmessage`: passes the message received from RabbitMQW to the event handler.
+
+`rmqws-onerror`: signals an error to the event handler.
+
+Some sample callbacks can be added like this:
+
+    $(document).ready(function() {
+      var rmqws = new RabbitMQWs();
+
+      rmqws.start();
+
+      $(rmqws).bind('rmqws-onconnection-status', function(event, status){
+          console.log(status);
+      });
+
+      $(rmqws).bind('rmqws-onmessage', function(event, msg){
+          console.log(msg);
+      });
+
+      $(rmqws).bind('rmqws-onerror', function(event, error){
+          console.log("#info", error);
+      });
+    };
 
 ## License ##
 

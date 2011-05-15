@@ -42,5 +42,40 @@
     </div>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/rmqws.js"></script>
+    <script type="text/javascript">
+        (function($) {
+
+            function displayMessage(where, message) {
+                $(where).append("<li>"+message+"</li>").attr({ scrollTop: $(where).attr("scrollHeight") });
+            };
+
+            $(document).ready(function() {
+                var rmqws = new RabbitMQWs();
+
+                rmqws.start();
+
+                $(rmqws).bind('rmqws-onconnection-status', function(event, status){
+                    displayMessage("#info", status);
+                });
+
+                $(rmqws).bind('rmqws-onmessage', function(event, msg){
+                    displayMessage("#messages", msg);
+                });
+
+                $(rmqws).bind('rmqws-onerror', function(event, error){
+                    displayMessage("#info", error);
+                });
+
+                $('form#exchange').submit(function(e) {
+                    e.preventDefault();
+                    var exchange = $.trim($('#name').val());
+                    var routing_key = $.trim($('#routing_key').val());
+                    rmqws.switchExchange(exchange, routing_key);
+                    displayMessage("#info", "Connected to: " + exchange + " using: " + routing_key);
+                    $('form#exchange').get(0).reset();
+                });
+            });
+        })(jQuery);
+    </script>
   </body>
 </html>
