@@ -83,25 +83,56 @@ The `RabbitMQWs` object will fire the following events:
 
 `rmqws-onerror`: signals an error to the event handler.
 
-Some sample callbacks can be added like this:
+A basic Javascript view can be made like this:
 
-    $(document).ready(function() {
-      var rmqws = new RabbitMQWs();
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>RabbitMQ Websockets Plugin - Basic Test</title>
+        <link rel="icon" href="/favicon.ico">
+      </head>
+      <body>
+        <h1>RabbitMQ Websockets Plugin - Basic Test</h1>
+        <ul id="messages"></ul>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/rmqws.js"></script>
+        <script type="text/javascript">
+            (function($) {
 
-      rmqws.start();
+                function displayMessage(message) {
+                    $("#messages").append("<li>"+message+"</li>").attr({ scrollTop: $("#messages").attr("scrollHeight") });
+                };
 
-      $(rmqws).bind('rmqws-onconnection-status', function(event, status){
-          console.log(status);
-      });
+                var RMQ_WS_PORT = 8080;
 
-      $(rmqws).bind('rmqws-onmessage', function(event, msg){
-          console.log(msg);
-      });
+                $(document).ready(function() {
+                  var rmqws = new RabbitMQWs();
 
-      $(rmqws).bind('rmqws-onerror', function(event, error){
-          console.log("#info", error);
-      });
-    };
+                  rmqws.start(window.location.hostname + ':' + RMQ_WS_PORT);
+
+                  $(rmqws).bind('rmqws-onconnection-status', function(event, status){
+                      if(status == 'connected') {
+                          rmqws.switchExchange('amq.fanout', "");
+                      }
+                      displayMessage(status);
+                  });
+
+                  $(rmqws).bind('rmqws-onmessage', function(event, msg){
+                      displayMessage(msg);
+                  });
+
+                  $(rmqws).bind('rmqws-onerror', function(event, error){
+                      displayMessage(error);
+                  });
+              });
+            })(jQuery);
+        </script>
+      </body>
+    </html>
+
+Copy the contents of the example to your `index.html` file and server that from your webserver. Modify `RMQ_WS_PORT` according to your settings.
+
+I created a sample project showing how to use this plugin: [rmq_ws_test](git clone git://github.com/videlalvaro/rmq_ws_test.git)
 
 ## License ##
 
