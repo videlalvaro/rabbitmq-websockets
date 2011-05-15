@@ -30,7 +30,7 @@ Once you have the code you can move into the `rabbitmq-websockets` and test the 
 
     $ make run-in-broker
 
-If you want to install the plugin in the broker then copy the `*.ez` files inside the `dist` folder to your broker `plugins` folder.
+If you want to install the plugin in the broker then copy the `*.ez` files inside the `dist` folder to your broker `plugins` folder. Don't copy the `rabbit_common-*.ez` file.
 
 ## Usage ##
 
