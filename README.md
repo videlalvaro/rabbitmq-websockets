@@ -10,6 +10,12 @@ The plugin will attach a consumer to the provided exchange and will start sendin
 
 Depending on the `type` of the exchange will be the behavior seen browser side.
 
+**Warning:** As with every RabbitMQ plugin, if this plugin crashes the broker may crash too. Be warned!.
+
+This plugin doesn't implement any client throttling. So if users can connect to your Websockets endpoint they can start getting messages from your server.
+
+Maybe in the future I may add authentication options for the AMQP connections. If you would like to use this plugin and have a need for such features please open a ticket on Github. Also you could fork the project and implement such features ;-).
+
 ## Installation ##
 
 Get the `rabbitmq-public-umbrella`
