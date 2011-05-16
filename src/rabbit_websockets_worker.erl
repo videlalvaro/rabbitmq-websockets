@@ -81,10 +81,10 @@ handle('GET',["favicon.ico"], #http_state{req=Req}) ->
     Req:file(filename:join(web_root(), "favicon.ico"), [{"Content-Type", "image/vnd.microsoft.icon"}]);
 
 handle('GET', ["js", FileName], #http_state{req=Req}) ->
-    Req:file(filename:join(js_root(), FileName), [{"Content-Type", "text/javascript"}]);
+    Req:file(filename:join(sub_folder("js"), FileName), [{"Content-Type", "text/javascript"}]);
 
 handle('GET', ["css", FileName], #http_state{req=Req}) ->
-    Req:file(filename:join(css_root(), FileName), [{"Content-Type", "text/css"}]);
+    Req:file(filename:join(sub_folder("css"), FileName), [{"Content-Type", "text/css"}]);
 
 handle(_, _, #http_state{req=Req}) ->
     Req:ok([{"Content-Type", "text/plain"}], "Page not found.").
@@ -92,11 +92,8 @@ handle(_, _, #http_state{req=Req}) ->
 web_root() ->
     filename:join(code:priv_dir(rabbitmq_websockets), "www").
 
-js_root() ->
-    filename:join(web_root(), "js").
-
-css_root() ->
-    filename:join(web_root(), "css").
+sub_folder(Folder) ->
+    filename:join(web_root(), Folder).
 
 %-----------------------------------
 % Websockets Handling Implementation
@@ -108,13 +105,11 @@ handle_websocket(#websocket_state{ws=Ws, conn=Connection, handler={M, F}} = Stat
             Ws:send(M:F(Msg)),
             handle_websocket(State);
         {browser, Data} ->
-            {E, R} = parse_data(Data),
-            error_logger:info_msg("Binding to exchange: ~p with RKey: ~p~n", [E, R]),
+            {Ex, RKey} = parse_data(Data),
+            error_logger:info_msg("Binding to exchange: ~p with RKey: ~p~n", [Ex, RKey]),
             maybe_stop_consumer(State#websocket_state.consumer),
             {ok, Channel}  = amqp_connection:open_channel(Connection),
-            BExchange = list_to_binary(E),
-            BRKey = list_to_binary(R),
-            {ok, Consumer} = rabbit_websockets_consumer:start([Channel, BExchange, BRKey, self()]),
+            {ok, Consumer} = rabbit_websockets_consumer:start([Channel, Ex, RKey, self()]),
             handle_websocket(State#websocket_state{consumer = Consumer});
         closed ->
             maybe_stop_consumer(State#websocket_state.consumer);
@@ -126,8 +121,8 @@ handle_websocket(#websocket_state{ws=Ws, conn=Connection, handler={M, F}} = Stat
 
 parse_data(Data) ->
     case string:tokens(Data, ":") of
-        [Exchange, RKey] -> {Exchange, RKey};
-        [Exchange] -> {Exchange, ""}
+        [Exchange, RKey] -> {list_to_binary(Exchange), list_to_binary(RKey)};
+        [Exchange] -> {list_to_binary(Exchange), <<"">>}
     end.
 
 maybe_start_consumer(undefined, Args) ->
