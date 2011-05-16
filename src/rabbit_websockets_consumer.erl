@@ -9,7 +9,6 @@
 -export([start/1]).
 -export([stop/1]).
 
-
 -record(state, {channel, reply_pid, consumer_tag}).
 
 start(Opts) ->
