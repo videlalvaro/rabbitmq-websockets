@@ -26,7 +26,7 @@ h1 {
 #messages {
    margin:0;
    height: 100%;
-   width: 74%;
+   width: 68%;
    float: left;
    overflow-y: auto;
    overflow-x: hidden;
@@ -34,8 +34,9 @@ h1 {
 }
 
 #widgets {
+   margin-top: 5px;
    width: 25%;
-   float: right;
+   float: left;
 }
 
 #info {
@@ -49,8 +50,6 @@ h1 {
    list-style-type: none;
    padding: 3px;
    float: left;
-   min-width: 99%;
-   max-width: 100%;
    width: 100%;
    clear: both;
    font-size: 14px;
@@ -94,6 +93,5 @@ label + input {
 }
 
 input#name {
-   width: 99%;
-   max-width: 100%;
+   width: 100%;
 }
