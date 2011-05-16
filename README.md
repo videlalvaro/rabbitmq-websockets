@@ -58,7 +58,7 @@ This plugin has two parameters that affect its behavior:
 
 `misultin_port`: The port Misultin should listen to. Default value is `8080`.
 
-`message_handler`: an Erlang tuple with two atoms like {module, function}. Default value is `{rabbit_websockets_util, basic_handler}`.
+`message_handler`: an Erlang tuple with two atoms like {module, function}. Default value is `{rabbit_websockets_util, basic_handler}`. The message handler will be used to decode the message. It should return the message in such a way that is suitable to send over websockets. For example, if you are sending JSON messages and you are only interested in one field of the JSON object, then you can provide a handler that will decode the JSON object, extract the field, and return that value.
 
 You can modify such settings on your `rabbitmq.config` file like this:
 
