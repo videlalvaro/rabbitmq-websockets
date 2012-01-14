@@ -1,13 +1,7 @@
 {application, rabbitmq_websockets,
  [{description, "AMQP to Websockets bridge"},
   {vsn, "%%VSN%%"},
-  {modules, [
-    rabbit_websockets,
-    rabbit_websockets_consumer,
-    rabbit_websockets_sup,
-    rabbit_websockets_util,
-    rabbit_websockets_worker
-  ]},
+  {modules, []},
   {registered, []},
   {mod, {rabbit_websockets, []}},
   {env, [ {misultin_port, 8080},
