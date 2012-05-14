@@ -1,5 +1,11 @@
 # RabbitMQ Websockets Plugin #
 
+## If you need to do web messaging then better try this new RabbitMQ plugin: [http://www.rabbitmq.com/blog/2012/05/14/introducing-rabbitmq-web-stomp/](http://www.rabbitmq.com/blog/2012/05/14/introducing-rabbitmq-web-stomp/). ##
+
+This plugin was an experiment so you better try that other one from the RabbitMQ developers.
+
+----------------------------------------------
+
 This plugin exposes Websockets for RabbitMQ.
 
 The user connects to the host where RabbitMQ is running, using default port `8080`.
